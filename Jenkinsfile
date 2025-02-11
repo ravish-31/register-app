@@ -96,7 +96,7 @@ pipeline {
                     //     --data 'IMAGE_TAG=${IMAGE_TAG}' \
                     //     'http://ec2-13-233-42-35.ap-south-1.compute.amazonaws.com:8080/job/gitops-register-app-cd/buildWithParameters?token=gitops-token'
                     // """
-                    withCredentials([string(credentialsId: 'jenkins-api-token', variable: 'JENKINS_API_TOKEN')]) {
+                    withCredentials([string(credentialsId: 'JENKINS_API_TOKEN', variable: 'JENKINS_API_TOKEN')]) {
                     sh 'curl -v -k --user admin:$JENKINS_API_TOKEN -X POST http://your-jenkins-url/job/job-name/buildWithParameters?token=your-token'
                     }
 
