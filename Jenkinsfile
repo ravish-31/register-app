@@ -112,6 +112,6 @@ pipeline {
     //                  subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Successful", 
     //                  mimeType: 'text/html', to: "ashfaque.s510@gmail.com"
     //     }      
-    } // ✅ This closes the "post" block
-} // ✅ This closes the "pipeline" block
+//     } // ✅ This closes the "post" block
+// } // ✅ This closes the "pipeline" block
 
