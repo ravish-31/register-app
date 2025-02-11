@@ -99,18 +99,19 @@ pipeline {
                 }
             }
         }
-    }
+    } // ✅ This closes the "stages" block
 
-//     post {
-//         failure {
-//             emailext body: '''${SCRIPT, template="groovy-html.template"}''', 
-//                      subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Failed", 
-//                      mimeType: 'text/html', to: "ashfaque.s510@gmail.com"
-//         }
-//         success {
-//             emailext body: '''${SCRIPT, template="groovy-html.template"}''', 
-//                      subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Successful", 
-//                      mimeType: 'text/html', to: "ashfaque.s510@gmail.com"
-//         }      
-//     }
-// }  // <-- Ensures proper closure of pipeline block
+    // post {
+    //     failure {
+    //         emailext body: '''${SCRIPT, template="groovy-html.template"}''', 
+    //                  subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Failed", 
+    //                  mimeType: 'text/html', to: "ashfaque.s510@gmail.com"
+    //     }
+    //     success {
+    //         emailext body: '''${SCRIPT, template="groovy-html.template"}''', 
+    //                  subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Successful", 
+    //                  mimeType: 'text/html', to: "ashfaque.s510@gmail.com"
+    //     }      
+    } // ✅ This closes the "post" block
+} // ✅ This closes the "pipeline" block
+
