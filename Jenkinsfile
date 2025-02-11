@@ -58,7 +58,7 @@ pipeline {
         stage("Build & Push Docker Image") {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
 
                         docker_image = docker.build "${IMAGE_NAME}:${IMAGE_TAG}"
@@ -89,27 +89,32 @@ pipeline {
         stage("Trigger CD Pipeline") {
             steps {
                 script {
-                    sh """
-                        withCredentials([string(credentialsId: 'jenkins-api-token', variable: 'JENKINS_API_TOKEN')]) {
-    sh 'curl -v -k --user admin:$JENKINS_API_TOKEN -X POST http://your-jenkins-url/job/job-name/buildWithParameters?token=your-token'
-}
+                    // sh """
+                    //     curl -v -k --user admin:${JENKINS_API_TOKEN} -X POST \
+                    //     -H 'cache-control: no-cache' \
+                    //     -H 'content-type: application/x-www-form-urlencoded' \
+                    //     --data 'IMAGE_TAG=${IMAGE_TAG}' \
+                    //     'http://ec2-13-233-42-35.ap-south-1.compute.amazonaws.com:8080/job/gitops-register-app-cd/buildWithParameters?token=gitops-token'
+                    // """
+                    withCredentials([string(credentialsId: 'jenkins-api-token', variable: 'JENKINS_API_TOKEN')]) {
+                    sh 'curl -v -k --user admin:$JENKINS_API_TOKEN -X POST http://your-jenkins-url/job/job-name/buildWithParameters?token=your-token'
+                    }
 
                 }
             }
         }
-    } // ✅ This closes the "stages" block
-
+    }
+    
     // post {
     //     failure {
-    //         emailext body: '''${SCRIPT, template="groovy-html.template"}''', 
+    //         emailext body: """${SCRIPT, template="groovy-html.template"}""", 
     //                  subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Failed", 
     //                  mimeType: 'text/html', to: "ashfaque.s510@gmail.com"
     //     }
     //     success {
-    //         emailext body: '''${SCRIPT, template="groovy-html.template"}''', 
+    //         emailext body: """${SCRIPT, template="groovy-html.template"}""", 
     //                  subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Successful", 
     //                  mimeType: 'text/html', to: "ashfaque.s510@gmail.com"
     //     }      
-    // } // ✅ This closes the "post" block
-} // ✅ This closes the "pipeline" block
+    // }
 }
